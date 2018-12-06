@@ -1,0 +1,19 @@
+
+config: pro
+
+server:
+  host: 0.0.0.0:9527
+  version: 1.0
+
+mysql:
+  host: root:123456@tcp(127.0.0.1:3306)/shop?charset=utf8mb4&parseTime=True&loc=Local
+  logLevel: info
+
+logLevel: info
+
+redis:
+  host: 35.184.61.166:6379
+  password: uqJiSCyj7Yam
+  IdleTimeout: 210
+
+stockCron: 0 0 0 * * ?
