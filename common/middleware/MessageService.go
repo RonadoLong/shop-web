@@ -1,21 +1,22 @@
 package middleware
 
 import (
-	ypclnt "github.com/yunpian/yunpian-go-sdk/sdk"
-	"sync"
-	"shop-web/common/redis"
-	"shop-web/common/log"
-	"os"
-	"strconv"
 	"math/rand"
-	"shop-web/module/user/utils"
-	"github.com/gin-gonic/gin"
+	"os"
 	"shop-web/common/commonUtils"
+	"shop-web/common/log"
+	"shop-web/common/redis"
+	"shop-web/module/user/utils"
+	"strconv"
+	"sync"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	ypclnt "github.com/yunpian/yunpian-go-sdk/sdk"
 )
 
 const (
-	appkey = "8af596c745e7ce9eedd7bcea54fb114c"
+	appkey  = ""
 	content = "【TOH】Your verification code is "
 )
 
@@ -26,10 +27,10 @@ var MessageService = &messageService{
 }
 
 type messageService struct {
-	 mutex *sync.Mutex
+	mutex *sync.Mutex
 }
 
-func (messageService *messageService)SendCode(c *gin.Context)  {
+func (messageService *messageService) SendCode(c *gin.Context) {
 	// 发送短信
 	messageService.mutex.Lock()
 	defer messageService.mutex.Unlock()
@@ -37,8 +38,8 @@ func (messageService *messageService)SendCode(c *gin.Context)  {
 	rand.Seed(time.Now().Unix())
 	phone := c.Param("phone")
 	code := strconv.Itoa(rand.Intn(1000000))
-	key := utils.UserCodeKey +  phone
-	err := redis.RedisClient.Set(key, []byte(code),time.Minute*5).Err()
+	key := utils.UserCodeKey + phone
+	err := redis.RedisClient.Set(key, []byte(code), time.Minute*5).Err()
 	if err != nil {
 		logger.Infof("redis set code error", err.Error())
 		return
